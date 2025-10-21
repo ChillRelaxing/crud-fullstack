@@ -1,12 +1,21 @@
+# Nixpacks Configuration for Railway
 [phases.setup]
 nixPkgs = ['nodejs_20']
 
 [phases.build]
 cmds = [
-  'echo "Building frontend..."',
-  'cd frontend && rm -rf node_modules && npm install --legacy-peer-deps && npm run build',
-  'echo "Building backend..."',
-  'cd backend && npm install && npx prisma generate && npm run build'
+  'echo "=== Building Frontend ==="',
+  'cd frontend',
+  'rm -rf node_modules',
+  'npm install --legacy-peer-deps',
+  'npm run build',
+  'cd ..',
+  'echo "=== Building Backend ==="',
+  'cd backend',
+  'npm install',
+  'npx prisma generate',
+  'npm run build',
+  'cd ..'
 ]
 
 [start]
