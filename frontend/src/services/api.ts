@@ -3,8 +3,22 @@ import { User, Post, CreateUserDto, UpdateUserDto, CreatePostDto, UpdatePostDto 
 
 // En producción, la API está en la misma URL (Railway)
 // En desarrollo, usar localhost:3000
-const API_URL = import.meta.env.VITE_API_URL || 
-  (import.meta.env.MODE === 'production' ? '/api' : 'http://localhost:3000/api');
+const getApiUrl = () => {
+  // Si está definida la variable de entorno, usarla
+  if (typeof import.meta !== 'undefined' && import.meta.env && import.meta.env.VITE_API_URL) {
+    return import.meta.env.VITE_API_URL;
+  }
+  
+  // En producción (mismo dominio), usar ruta relativa
+  if (typeof window !== 'undefined' && window.location.hostname !== 'localhost') {
+    return '/api';
+  }
+  
+  // En desarrollo local
+  return 'http://localhost:3000/api';
+};
+
+const API_URL = getApiUrl();
 
 const api = axios.create({
   baseURL: API_URL,
